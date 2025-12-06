@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To‑Do List</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #ff7ad1, #7af0ff); padding:20px; font-size: x-large;}
+        .container { max-width:70vw; margin:auto; background:white; padding:20px; border-radius:20px; box-shadow:0 0 15px rgba(0,0,0,0.3); border:3px solid #ff70b8; }
+        ul { list-style:none; padding:0; }
+        li { display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #ddd; }
+        li.done { text-decoration: line-through; opacity:0.6; }
+        button { margin-left:10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>To‑Do List</h2>
+        <input id="taskInput" type="text" placeholder="Add a new task..." />
+        <button onclick="addTask()">Add</button>
+        <ul id="taskList"></ul>
+    </div>
+
+<script>
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [
+        { text: "Computer- Introduction, hardware, software, Number Systems", done:false },
+        { text: "Problem Solving and strategies", done:false },
+        { text: "Algorithms, Flowchart and Pseudocode", done:false },
+        { text: "Basics of C language: structure, tokens, IO, headers, macros", done:false },
+        { text: "Conditional Statements: if, if-else, ladder, nested, switch", done:false },
+        { text: "Iteration Statements: for, while, do-while", done:false },
+        { text: "Jump Statements: break, continue, goto, return", done:false },
+        { text: "Arrays: 1D & 2D", done:false },
+        { text: "Strings and string functions", done:false },
+        { text: "Functions: declaration, definition, recursion", done:false },
+        { text: "Storage classes of variables", done:false },
+        { text: "Structures", done:false },
+        { text: "Unions", done:false },
+        { text: "Pointers", done:false },
+        { text: "Dynamic Memory Allocation (malloc, calloc, realloc, free)", done:false },
+        { text: "Files: read, write, append", done:false }
+    ];
+
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+        const list = document.getElementById("taskList");
+        list.innerHTML = "";
+        tasks.forEach((task, index) => {
+            const li = document.createElement("li");
+            li.className = task.done ? "done" : "";
+
+            const check = document.createElement("input");
+            check.type = "checkbox";
+            check.checked = task.done;
+            check.onchange = () => toggleDone(index);
+
+            const span = document.createElement("span");
+            span.textContent = task.text;
+            span.onclick = () => toggleDone(index);
+
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "✖";
+            delBtn.onclick = () => deleteTask(index);
+
+            li.appendChild(check);
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            list.appendChild(li);
+        });
+    }
+
+    function addTask() {
+        const input = document.getElementById("taskInput");
+        const text = input.value.trim();
+        if (!text) return;
+        tasks.push({ text, done:false });
+        saveTasks();
+        input.value = "";
+        renderTasks();
+    }
+
+    function toggleDone(index) {
+        const item = tasks[index];
+        item.done = !item.done;
+
+        // Move completed tasks to the end
+        if (item.done) {
+            tasks.push(item);
+            tasks.splice(index, 1);
+        }
+        saveTasks();
+        renderTasks();
+    }
+
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+    }
+
+    renderTasks();
+</script>
+</body>
+</html>
