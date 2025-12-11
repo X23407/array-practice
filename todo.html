@@ -18,6 +18,7 @@
         <h2>To-Do List</h2>
         <input id="taskInput" type="text" placeholder="Add a new task..." />
         <button onclick="addTask()">Add</button>
+        <button onclick="clearAllTask()">Reset</button>
         <ul id="taskList"></ul>
     </div>
 
@@ -61,6 +62,18 @@
 
     function saveTasks() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function clearAllTask(){
+        let con = confirm("Do you really want to reset to default");
+        let ccon = confirm("You All progress will be lost");
+        if (con&&ccon){
+            localStorage.setItem("tasks",null);
+            alert("Data clear succesfully");
+            window.location.reload();
+            return;
+        }
+        alert("Reset failed");
     }
 
     function renderTasks() {
