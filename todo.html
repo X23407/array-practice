@@ -15,30 +15,48 @@
 </head>
 <body>
     <div class="container">
-        <h2>To‑Do List</h2>
+        <h2>To-Do List</h2>
         <input id="taskInput" type="text" placeholder="Add a new task..." />
         <button onclick="addTask()">Add</button>
         <ul id="taskList"></ul>
     </div>
 
 <script>
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [
-        { text: "Computer- Introduction, hardware, software, Number Systems", done:false },
-        { text: "Problem Solving and strategies", done:false },
-        { text: "Algorithms, Flowchart and Pseudocode", done:false },
-        { text: "Basics of C language: structure, tokens, IO, headers, macros", done:false },
-        { text: "Conditional Statements: if, if-else, ladder, nested, switch", done:false },
-        { text: "Iteration Statements: for, while, do-while", done:false },
-        { text: "Jump Statements: break, continue, goto, return", done:false },
-        { text: "Arrays: 1D & 2D", done:false },
-        { text: "Strings and string functions", done:false },
-        { text: "Functions: declaration, definition, recursion", done:false },
-        { text: "Storage classes of variables", done:false },
-        { text: "Structures", done:false },
-        { text: "Unions", done:false },
-        { text: "Pointers", done:false },
-        { text: "Dynamic Memory Allocation (malloc, calloc, realloc, free)", done:false },
-        { text: "Files: read, write, append", done:false }
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || 
+    [
+    // MODULE 1: Technical Communication
+    { text: "Basics of Technical Communication", done:false },
+    { text: "Barriers to Communication", done:false },
+    { text: "Non verbal communication", done:false },
+
+    // MODULE 2: Listening and Speaking
+    { text: "Active Listening", done:false },
+    { text: "Introduction to Phonetics", done:false },
+    { text: "Interview Skills", done:false },
+    { text: "Presentation Skills", done:false },
+    { text: "Group Discussion", done:false },
+    { text: "Soft skills – an overview", done:false },
+
+    // MODULE 3: Reading & Writing
+    { text: "Resume (with Cover letter)", done:false },
+    { text: "Sample Cover Letter", done:false },
+    { text: "Minutes", done:false },
+    { text: "Technical Reports", done:false },
+
+    // MODULE 4: Grammar & Vocabulary
+    { text: "Tenses", done:false },
+    { text: "Concord", done:false },
+    { text: "Active & Passive Voice", done:false },
+    { text: "Question Tags", done:false },
+    { text: "Parts of Speech", done:false },
+    { text: "Conjunctions, Articles and Modals", done:false },
+    { text: "Punctuations", done:false },
+    { text: "Prepositions", done:false },
+    { text: "Phrasal Verbs", done:false },
+    { text: "Degrees of Comparison", done:false },
+    { text: "Direct and Indirect Speech", done:false },
+    { text: "Idioms", done:false },
+    { text: "Words often confused", done:false }
     ];
 
     function saveTasks() {
