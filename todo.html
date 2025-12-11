@@ -60,6 +60,19 @@
     { text: "Words often confused", done:false }
     ];
 
+    function sortTasks() {
+        return tasks.sort((a, b) => {
+        // First sort by done (true first, false later)
+        if (a.done !== b.done) {
+            return a.done ? 1 : -1;
+        }
+        // If both have same done status, sort alphabetically by text
+        return a.text.localeCompare(b.text);
+        });
+    }
+
+
+
     function saveTasks() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }
@@ -77,6 +90,7 @@
     }
 
     function renderTasks() {
+        sortTasks();
         const list = document.getElementById("taskList");
         list.innerHTML = "";
         tasks.forEach((task, index) => {
