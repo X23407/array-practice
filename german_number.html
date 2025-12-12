@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>German Numbers Quiz — 40 Questions</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: Inter, system-ui, Arial; background:#f6f8fb; color:#0f1724; padding:24px; }
+    .container { max-width:900px; margin:0 auto; background:white; padding:20px 24px; border-radius:12px; box-shadow:0 6px 20px rgba(12,20,40,0.08); }
+    h1 { margin:0 0 8px; font-size:22px; letter-spacing:0.4px; }
+    p.lead { margin:0 0 18px; color:#374151; }
+    .question { border:1px solid #eef2f7; padding:12px; border-radius:8px; margin-bottom:10px; display:flex; flex-direction:column; }
+    .qtop { display:flex; gap:12px; align-items:center; }
+    .qnum { background:#eef2ff; color:#0b63d6; font-weight:700; padding:6px 10px; border-radius:6px; min-width:40px; text-align:center; }
+    .qtext { font-weight:600; font-size:16px; }
+    .options { display:flex; gap:14px; margin-top:10px; }
+    .opt { display:flex; align-items:center; gap:8px; border-radius:8px; padding:8px 10px; border:1px solid #e6eef9; background:#fff; cursor:pointer; user-select:none; }
+    .opt input { width:18px; height:18px; accent-color:#0b63d6; }
+    .feedback { margin-top:8px; font-weight:700; }
+    .correct { color: #0b8a3e; }
+    .incorrect { color: #c02323; }
+    .controls { display:flex; gap:10px; margin-top:14px; align-items:center; }
+    button { background:#0b63d6; color:white; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    button.secondary { background:#e6eef9; color:#0b63d6; }
+    footer { margin-top:16px; font-size:13px; color:#374151; }
+    @media (max-width:640px){ .options{flex-direction:column} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Übung: Wählen Sie die richtige Option (40 Fragen)</h1>
+    <p class="lead">Klicken Sie eine Checkbox pro Frage — das System zeigt sofort, ob Sie richtig liegen.</p>
+
+    <div id="quiz"></div>
+
+    <div class="controls">
+      <button id="resetBtn" class="secondary">Reset answers</button>
+      <button id="showScore">Show score</button>
+      <div id="scoreText" style="margin-left:10px;font-weight:700;"></div>
+    </div>
+
+    <footer>Made for practice — good luck on your exam! 😎🇩🇪</footer>
+  </div>
+
+  <script>
+    // QUESTIONS: german text, options [first, second], correctIndex (0 or 1)
+    const questions = [
+      {g: "Vierundzwanzig", options: ["42","24"], correct: 1},
+      {g: "Sechsundsiebzig", options: ["67","76"], correct: 1},
+      {g: "Zweiunddreißig", options: ["23","32"], correct: 1},
+      {g: "Neunundvierzig", options: ["94","49"], correct: 1},
+      {g: "Achtundsiebzig", options: ["87","78"], correct: 1},
+      {g: "Fünfundvierzig", options: ["45","54"], correct: 0},
+      {g: "Dreiundneunzig", options: ["39","93"], correct: 1},
+      {g: "Siebenundachtzig", options: ["78","87"], correct: 1},
+      {g: "Vierzehn", options: ["14","41"], correct: 0},
+      {g: "Dreiundfünfzig", options: ["35","53"], correct: 1},
+      {g: "Einundzwanzig", options: ["21","12"], correct: 0},
+      {g: "Fünfzig", options: ["50","05"], correct: 0},
+      {g: "Neunzig", options: ["90","09"], correct: 0},
+      {g: "Siebenundzwanzig", options: ["27","72"], correct: 0},
+      {g: "Sechsunddreißig", options: ["36","63"], correct: 0},
+      {g: "Achtzehn", options: ["18","81"], correct: 0},
+      {g: "Zweiundsechzig", options: ["26","62"], correct: 1},
+      {g: "Vierundsechzig", options: ["46","64"], correct: 1},
+      {g: "Fünfunddreißig", options: ["53","35"], correct: 1},
+      {g: "Neunundneunzig", options: ["90","99"], correct: 1},
+      {g: "Dreißig", options: ["30","03"], correct: 0},
+      {g: "Einunddreißig", options: ["31","13"], correct: 0},
+      {g: "Siebzig", options: ["70","07"], correct: 0},
+      {g: "Vierundfünfzig", options: ["45","54"], correct: 1},
+      {g: "Sechzehn", options: ["16","61"], correct: 0},
+      {g: "Achtunddreißig", options: ["83","38"], correct: 1},
+      {g: "Zweiundfünfzig", options: ["25","52"], correct: 1},
+      {g: "Siebenunddreißig", options: ["37","73"], correct: 0},
+      {g: "Neunundzwanzig", options: ["29","92"], correct: 0},
+      {g: "Dreiundzwanzig", options: ["32","23"], correct: 1},
+      {g: "Achtundzwanzig", options: ["28","82"], correct: 0},
+      {g: "Vierzig", options: ["40","04"], correct: 0},
+      {g: "Sechsundfünfzig", options: ["65","56"], correct: 1},
+      {g: "Einundvierzig", options: ["41","14"], correct: 0},
+      {g: "Neunzehn", options: ["19","91"], correct: 0},
+      {g: "Zweiundachtzig", options: ["28","82"], correct: 1},
+      {g: "Fünfundsechzig", options: ["56","65"], correct: 1},
+      {g: "Siebenundsechzig", options: ["76","67"], correct: 1},
+      {g: "Achtundsechzig", options: ["68","86"], correct: 0}
+    ];
+
+    const quizEl = document.getElementById('quiz');
+
+    function createQuestionEl(q, idx) {
+      const wrap = document.createElement('div');
+      wrap.className = 'question';
+      const top = document.createElement('div');
+      top.className = 'qtop';
+      const num = document.createElement('div');
+      num.className = 'qnum';
+      num.textContent = idx + 1;
+      const qtext = document.createElement('div');
+      qtext.className = 'qtext';
+      qtext.textContent = q.g;
+      top.appendChild(num);
+      top.appendChild(qtext);
+      wrap.appendChild(top);
+
+      const opts = document.createElement('div');
+      opts.className = 'options';
+
+      q.options.forEach((optText, optIndex) => {
+        const id = `q${idx}_opt${optIndex}`;
+        const label = document.createElement('label');
+        label.className = 'opt';
+        label.htmlFor = id;
+
+        const input = document.createElement('input');
+        input.type = 'checkbox'; // user asked for checkbox
+        input.id = id;
+        input.name = `q${idx}`; // group by question
+        input.value = String(optIndex);
+
+        // make checkbox act single-choice: when this is checked, uncheck siblings
+        input.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            // uncheck all other checkboxes with same name
+            document.querySelectorAll(`input[name="${input.name}"]`).forEach(el => {
+              if (el !== input) el.checked = false;
+            });
+          }
+          // evaluate and show feedback
+          evaluateQuestion(idx);
+        });
+
+        const span = document.createElement('span');
+        span.textContent = optText;
+
+        label.appendChild(input);
+        label.appendChild(span);
+        opts.appendChild(label);
+      });
+
+      wrap.appendChild(opts);
+
+      const fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.id = `fb_${idx}`;
+      wrap.appendChild(fb);
+
+      return wrap;
+    }
+
+    function evaluateQuestion(idx) {
+      const q = questions[idx];
+      const group = document.querySelectorAll(`input[name="q${idx}"]`);
+      const fb = document.getElementById(`fb_${idx}`);
+      fb.textContent = '';
+      fb.className = 'feedback';
+
+      let chosen = null;
+      group.forEach(chk => { if (chk.checked) chosen = Number(chk.value); });
+
+      if (chosen === null) return; // no answer yet
+
+      if (chosen === q.correct) {
+        fb.textContent = 'Correct!';
+        fb.classList.add('correct');
+      } else {
+        fb.textContent = 'Incorrect — correct answer: ' + q.options[q.correct];
+        fb.classList.add('incorrect');
+      }
+    }
+
+    function renderQuiz() {
+      quizEl.innerHTML = '';
+      questions.forEach((q, i) => {
+        quizEl.appendChild(createQuestionEl(q, i));
+      });
+    }
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      // clear all checkboxes & feedback
+      document.querySelectorAll('input[type="checkbox"]').forEach(chk => chk.checked = false);
+      document.querySelectorAll('.feedback').forEach(f => { f.textContent = ''; f.className = 'feedback'; });
+      document.getElementById('scoreText').textContent = '';
+    });
+
+    document.getElementById('showScore').addEventListener('click', () => {
+      let correct = 0, answered = 0;
+      questions.forEach((q, idx) => {
+        const group = document.querySelectorAll(`input[name="q${idx}"]`);
+        let chosen = null;
+        group.forEach(chk => { if (chk.checked) chosen = Number(chk.value); });
+        if (chosen !== null) {
+          answered++;
+          if (chosen === q.correct) correct++;
+        }
+      });
+      document.getElementById('scoreText').textContent = `Score: ${correct} / ${questions.length} (answered ${answered})`;
+    });
+
+    // initial render
+    renderQuiz();
+  </script>
+</body>
+</html>
