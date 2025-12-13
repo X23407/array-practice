@@ -25,40 +25,53 @@
 <script>
     let tasks = JSON.parse(localStorage.getItem("tasks")) || 
     [
-    // MODULE 1: Technical Communication
-    { text: "Basics of Technical Communication", done:false },
-    { text: "Barriers to Communication", done:false },
-    { text: "Non verbal communication", done:false },
+    // MODULE 1: Computer Hardware
+    { text: "Prerequisite", done:false },
+    { text: "Computing Agents CPU", done:false },
+    { text: "Memory", done:false },
+    { text: "Motherboard", done:false },
+    { text: "Computer Peripherals", done:false },
+    { text: "I/O devices", done:false },
+    { text: "Storage devices", done:false },
+    { text: "Interface cards", done:false },
+    { text: "Buses", done:false },
+    { text: "Firmware", done:false },
+    { text: "Boot process", done:false },
 
-    // MODULE 2: Listening and Speaking
-    { text: "Active Listening", done:false },
-    { text: "Introduction to Phonetics", done:false },
-    { text: "Interview Skills", done:false },
-    { text: "Presentation Skills", done:false },
-    { text: "Group Discussion", done:false },
-    { text: "Soft skills – an overview", done:false },
+    // MODULE 2: Computer System Software
+    { text: "Operating Systems", done:false },
+    { text: "Unix/Linux commands", done:false },
+    { text: "Shell scripting", done:false },
 
-    // MODULE 3: Reading & Writing
-    { text: "Resume (with Cover letter)", done:false },
-    { text: "Sample Cover Letter", done:false },
-    { text: "Minutes", done:false },
-    { text: "Technical Reports", done:false },
+    // MODULE 3: Computer Communications
+    { text: "LAN", done:false },
+    { text: "MAN", done:false },
+    { text: "WAN", done:false },
+    { text: "Client/Server networks", done:false },
+    { text: "Peer-to-Peer networks", done:false },
+    { text: "Topologies", done:false },
+    { text: "Basics of IP addresses", done:false },
+    { text: "DNS", done:false },
+    { text: "Routers", done:false },
+    { text: "Internet", done:false },
+    { text: "WWW", done:false },
+    { text: "Web servers", done:false },
 
-    // MODULE 4: Grammar & Vocabulary
-    { text: "Tenses", done:false },
-    { text: "Concord", done:false },
-    { text: "Active & Passive Voice", done:false },
-    { text: "Question Tags", done:false },
-    { text: "Parts of Speech", done:false },
-    { text: "Conjunctions, Articles and Modals", done:false },
-    { text: "Punctuations", done:false },
-    { text: "Prepositions", done:false },
-    { text: "Phrasal Verbs", done:false },
-    { text: "Degrees of Comparison", done:false },
-    { text: "Direct and Indirect Speech", done:false },
-    { text: "Idioms", done:false },
-    { text: "Words often confused", done:false }
-    ];
+    // MODULE 4: Web Design
+    { text: "Basics of HTML", done:false },
+    { text: "CSS", done:false },
+    { text: "JavaScript", done:false },
+    { text: "Dynamic Webpage creation", done:false },
+    { text: "AngularJS basics", done:false },
+    { text: "Introduction to MVC", done:false },
+    { text: "Data Binding", done:false },
+    { text: "Filters and modules", done:false },
+    { text: "Directives", done:false },
+    { text: "Working with Forms", done:false },
+    { text: "Validation", done:false },
+    { text: "AngularJS animation", done:false },
+    { text: "Deployment considerations", done:false }
+];
 
     function sortTasks() {
         return tasks.sort((a, b) => {
